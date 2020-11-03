@@ -2,27 +2,32 @@
 	'use strict';
 
 // global variable
-	var win = $(window);
-	var _body = $('#body');
-	var _header = $('header');
-	var _fixbox = $('#fixbox');
-	var _section_1 = $('#section_1');
-	var _section_2 = $('#section_2');
-	var _section_3 = $('#section_3');
-	var _section_4 = $('#section_4');
-	var winW = _fixbox.width();
-	var winH = _fixbox.height();
+    let $fixbox = $('#fixbox');
+    const global = [];
+    global.winW = $fixbox.width();
+    global.winH = $fixbox.height();
+    global.$body = $('#body');
+    
+	// let _body = $('#body');
+	let _header = $('header');
+	let _section_1 = $('#section_1');
+	let _section_2 = $('#section_2');
+	let _section_3 = $('#section_3');
+	let _section_4 = $('#section_4');
+	let winW = $('#fixbox').width();
+	let winH = $('#fixbox').height();
 
-	var page = 0;
-	var scroll_lock = 0;
-	var touch_positionX;
-	var touch_positionY;
-	var touch_distanceY;
-	var prev_scrollTop = 0;
-	var new_touch_positionY;
+	let page = 0;
+	let scroll_lock = 0;
+	let touch_positionX;
+	let touch_positionY;
+	let touch_distanceY;
+	let prev_scrollTop = 0;
+    let new_touch_positionY;
+    
 // function
 	function init(){
-		_body.children('section').css('height', winH);
+		global.$body.children('section').css('height', winH);
 	}
 	function update_page(direction){
 		page = page + direction;
@@ -103,23 +108,26 @@
 	function switchPage_function(scroll_timing){
 		console.log(page);
 		console.log(winH);
-		_body.stop().animate({scrollTop: (page * winH)}, 500, 'linear');
+		global.$body.stop().animate({scrollTop: (page * winH)}, 500, 'linear');
 	}
 	function windowResizing(){
-		winH = _fixbox.height();
-		winW = _fixbox.width();
+        let $fixbox = $('#fixbox');
+		winH = $fixbox.height();
+		winW = $fixbox.width();
 		init();
 		switchPage_function(0);
-		_body.addClass('resizing');
+		global.$body.addClass('resizing');
 		setTimeout(function(){
-			_body.removeClass('resizing');
+			global.$body.removeClass('resizing');
 		},500);
 	}
 // function
 	init();
 	$(window).resize(windowResizing);
-	$('html, body').on('mousewheel', scroll);
-	_body.on('touchend', touchend);
-	_body.on('touchmove', touchmove);
-	_body.on('touchstart', touchstart);
+    $('html, body').on('mousewheel', scroll);
+    global.$body.on({
+        'touchend': touchend,
+        'touchmove': touchmove,
+        'touchstart': touchstart,
+    });
 }());
